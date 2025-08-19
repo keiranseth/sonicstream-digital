@@ -23,7 +23,9 @@ The company recently migrated historical sales data into the **Chinook database 
 
 ## 🧭 Project Background:
 
-The **Chief Marketing Officer (CMO)** has requested a **Monthly Customer & Sales Insights Report** for June. The Marketing and Product teams want to better understand:
+> _Note_: I expanded to include the entire time frame possible, with insights highlighting the recent year of 2025.
+
+The **Chief Marketing Officer (CMO)** has requested a **Monthly Customer & Sales Insights Report** for ~~June~~ the entire duration of the company, with emphasis on the entire year of 2025. The Marketing and Product teams want to better understand:
 
 -   Who are our most valuable customers?
 -   What music genres or artists are trending in each region?
