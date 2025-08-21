@@ -10,7 +10,7 @@ The overwhelming majority of the work is already done by the Engineering team, a
 2. In pgAdmin 4, create a database entitled `chinook` on the `PostgreSQL 17` server.
 3. Import all data from `.sql` script with the `Restore...` command. Make sure that the `Format` is set to `Plain`.
 
-## Preparing Data for Power BI
+## Preparing Data for Microsoft Excel and Microsoft Power BI
 
 In pgAdmin 4, export each table in the `chinook` database as a `.csv` file and save in a folder.
 

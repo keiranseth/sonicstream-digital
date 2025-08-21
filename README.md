@@ -1,10 +1,10 @@
-# SonicStream Digital Media Analysis Project
+# SonicStream Digital Media Analysis
 
 This is an end-to-end portfolio data analysis project demonstrating my proficiency in Excel, SQL, and PowerBI.
 
 ## Table of Contents
 
-- [SonicStream Digital Media Analysis Project](#sonicstream-digital-media-analysis-project)
+- [SonicStream Digital Media Analysis](#sonicstream-digital-media-analysis)
   - [Table of Contents](#table-of-contents)
   - [Workplace Scenario](#workplace-scenario)
   - [Deliverables](#deliverables)
@@ -82,11 +82,11 @@ See the exploratory data analysis reports by category:
 
 ### Analysis Report
 
+Read the [final report](./final_report/report.pdf).
+
 ### Dashboard (Visualizations)
 
-See the [interactive visuals](https://app.powerbi.com/view?r=eyJrIjoiMzg1ODc0YjUtNDgwMC00YjY1LWJiOTEtYjNiZTdiNmQ4MTllIiwidCI6ImJkMDNhNzM1LTJhYTMtNGNjYS05NzIyLTJhZTQ5MjlhYjNlYyIsImMiOjEwfQ%3D%3D).
-
-<iframe title="chinook" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMzg1ODc0YjUtNDgwMC00YjY1LWJiOTEtYjNiZTdiNmQ4MTllIiwidCI6ImJkMDNhNzM1LTJhYTMtNGNjYS05NzIyLTJhZTQ5MjlhYjNlYyIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+View the [interactive visuals](https://app.powerbi.com/view?r=eyJrIjoiMzg1ODc0YjUtNDgwMC00YjY1LWJiOTEtYjNiZTdiNmQ4MTllIiwidCI6ImJkMDNhNzM1LTJhYTMtNGNjYS05NzIyLTJhZTQ5MjlhYjNlYyIsImMiOjEwfQ%3D%3D).
 
 ### Summary of Insights
 
