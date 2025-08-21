@@ -2,11 +2,11 @@
 
 > Download `Chinook_PostgreSql.sql` from the [dataset source](https://github.com/lerocha/chinook-database).
 
-The overwhelming majority of the work is already done by the Database Administration team, and thus the data preparation on our end as the analytics team is super brief.
+The overwhelming majority of the work is already done by the Engineering team, and thus the data preparation on our end as the analytics team is super brief.
 
 ## Preparing Data for pgAdmin 4 (PostgreSQL 17)
 
-1. Download the database (as a `.sql` script) emailed to us from the Database Administration team.
+1. Download the database (as a `.sql` script) emailed to us from the Engineering team.
 2. In pgAdmin 4, create a database entitled `chinook` on the `PostgreSQL 17` server.
 3. Import all data from `.sql` script with the `Restore...` command. Make sure that the `Format` is set to `Plain`.
 

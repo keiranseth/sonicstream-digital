@@ -98,11 +98,11 @@ GROUP BY num_sales
 ORDER BY num_sales;
 
 
--- 3 
+-- 3
 
 SELECT
 	i.invoice_id,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
@@ -111,7 +111,7 @@ GROUP BY i.invoice_id;
 WITH sub AS (
 	SELECT
 		i.invoice_id,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
@@ -128,7 +128,7 @@ FROM sub;
 
 SELECT
 	i.invoice_id,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
@@ -137,7 +137,7 @@ GROUP BY i.invoice_id;
 WITH sub AS (
 	SELECT
 		i.invoice_id,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
@@ -161,11 +161,11 @@ SELECT
 	COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 	COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 	SUM(il.quantity) AS num_sales,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
-GROUP BY 
+GROUP BY
 	EXTRACT(YEAR FROM i.invoice_date),
 	EXTRACT(WEEK FROM i.invoice_date);
 
@@ -176,15 +176,15 @@ WITH sub AS (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
-	GROUP BY 
+	GROUP BY
 		EXTRACT(YEAR FROM i.invoice_date),
 		EXTRACT(WEEK FROM i.invoice_date)
 )
-SELECT 
+SELECT
 	ROUND(AVG(num_sales)) AS mean_tracks_weekly,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_sales) AS median_tracks_weekly,
 	ROUND(AVG(revenue), 2) AS mean_revenue_weekly,
@@ -200,11 +200,11 @@ SELECT
 	COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 	COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 	SUM(il.quantity) AS num_sales,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
-GROUP BY 
+GROUP BY
 	EXTRACT(YEAR FROM i.invoice_date),
 	EXTRACT(MONTH FROM i.invoice_date);
 
@@ -215,15 +215,15 @@ WITH sub AS (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
-	GROUP BY 
+	GROUP BY
 		EXTRACT(YEAR FROM i.invoice_date),
 		EXTRACT(MONTH FROM i.invoice_date)
 )
-SELECT 
+SELECT
 	ROUND(AVG(num_sales), 2) AS mean_tracks_monthly,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_sales) AS median_tracks_monthly,
 	ROUND(AVG(revenue), 2) AS mean_revenue_monthly,
@@ -239,11 +239,11 @@ SELECT
 	COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 	COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 	SUM(il.quantity) AS num_sales,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
-GROUP BY 
+GROUP BY
 	EXTRACT(YEAR FROM i.invoice_date),
 	EXTRACT(QUARTER FROM i.invoice_date);
 
@@ -254,15 +254,15 @@ WITH sub AS (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
-	GROUP BY 
+	GROUP BY
 		EXTRACT(YEAR FROM i.invoice_date),
 		EXTRACT(QUARTER FROM i.invoice_date)
 )
-SELECT 
+SELECT
 	ROUND(AVG(num_sales), 2) AS mean_tracks_quarterly,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_sales) AS median_tracks_quarterly,
 	ROUND(AVG(revenue), 2) AS mean_revenue_quarterly,
@@ -277,11 +277,11 @@ SELECT
 	COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 	COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 	SUM(il.quantity) AS num_sales,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
-GROUP BY 
+GROUP BY
 	EXTRACT(YEAR FROM i.invoice_date);
 
 WITH sub AS (
@@ -290,17 +290,16 @@ WITH sub AS (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
-	GROUP BY 
+	GROUP BY
 		EXTRACT(YEAR FROM i.invoice_date)
 )
-SELECT 
+SELECT
 	ROUND(AVG(num_sales)) AS mean_tracks_yearly,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY num_sales) AS median_tracks_yearly,
 	ROUND(AVG(revenue), 2) AS mean_revenue_yearly,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY revenue) AS median_revenue_yearly
 FROM sub;
-

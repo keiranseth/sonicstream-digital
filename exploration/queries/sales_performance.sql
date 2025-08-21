@@ -111,7 +111,7 @@ WITH sub AS (
 	FROM invoice
 	GROUP BY invoice_id
 )
-SELECT 
+SELECT
 	ROUND(AVG(sum_sales_total), 2) AS avg_total_per_invoice,
 	PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY sum_sales_total) AS median_total_per_invoice
 FROM sub;
@@ -167,7 +167,7 @@ ORDER BY num_sales DESC;
 
 SELECT
 	g.name AS genre_name,
-	SUM(total) AS total_sales
+	SUM(il.quantity * il.unit_price) AS total_sales
 FROM track AS t
 INNER JOIN genre AS g
 	ON t.genre_id = g.genre_id
@@ -235,7 +235,7 @@ WHERE ar.name IN (
 
 SELECT
 	ar.name AS artist,
-	SUM(i.total) AS total_sales
+	SUM(il.quantity * il.unit_price) AS total_sales
 FROM track AS t
 INNER JOIN invoice_line AS il
 	ON t.track_id = il.track_id
@@ -262,7 +262,7 @@ WHERE ar.name IN (
 	FROM (
 		SELECT
 			ar.name AS artist,
-			SUM(i.total) AS total_sales
+			SUM(il.quantity * il.unit_price) AS total_sales
 		FROM track AS t
 		INNER JOIN invoice_line AS il
 			ON t.track_id = il.track_id
@@ -331,7 +331,7 @@ WHERE al.title IN (
 
 SELECT
 	al.title AS album,
-	SUM(i.total) AS total_sales
+	SUM(il.quantity * il.unit_price) AS total_sales
 FROM track AS t
 INNER JOIN invoice_line AS il
 	ON t.track_id = il.track_id
@@ -357,7 +357,7 @@ WHERE al.title IN (
 	FROM (
 		SELECT
 			al.title AS album,
-			SUM(i.total) AS total_sales
+			SUM(il.quantity * il.unit_price) AS total_sales
 		FROM track AS t
 		INNER JOIN invoice_line AS il
 			ON t.track_id = il.track_id

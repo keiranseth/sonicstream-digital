@@ -147,7 +147,7 @@ SELECT
 	COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 	COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 	SUM(il.quantity) AS num_sales,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
@@ -165,7 +165,7 @@ WITH sub as (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
@@ -180,6 +180,7 @@ SELECT
 	ROUND(AVG(num_unique_invoices)) AS avg_invoices,
 	ROUND(AVG(num_sales)) AS avg_sales,
 	ROUND(AVG(revenue), 2) AS avg_revenue,
+	ROUND(SUM(revenue), 2) AS sum_revenue,
 	MAX(revenue) AS max_revenue,
 	MIN(revenue) AS min_revenue
 FROM sub;
@@ -192,7 +193,7 @@ SELECT
 	COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 	COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 	SUM(il.quantity) AS num_sales,
-	SUM(i.total) AS revenue
+	SUM(il.quantity * il.unit_price) AS revenue
 FROM invoice AS i
 INNER JOIN invoice_line AS il
 	ON i.invoice_id = il.invoice_id
@@ -201,7 +202,28 @@ GROUP BY
 	EXTRACT(MONTH FROM i.invoice_date)
 ORDER BY
 	EXTRACT(YEAR FROM i.invoice_date),
-	EXTRACT(MONTH FROM i.invoice_date);	
+	EXTRACT(MONTH FROM i.invoice_date);
+
+WITH sub AS (
+	SELECT
+		EXTRACT(YEAR FROM i.invoice_date) AS year,
+		EXTRACT(MONTH FROM i.invoice_date) AS month,
+		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
+		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
+		SUM(il.quantity) AS num_sales,
+		SUM(il.quantity * il.unit_price) AS revenue
+	FROM invoice AS i
+	INNER JOIN invoice_line AS il
+		ON i.invoice_id = il.invoice_id
+	GROUP BY 
+		EXTRACT(YEAR FROM i.invoice_date),
+		EXTRACT(MONTH FROM i.invoice_date)
+	ORDER BY
+		EXTRACT(YEAR FROM i.invoice_date),
+		EXTRACT(MONTH FROM i.invoice_date)
+)
+SELECT AVG(revenue)
+FROM sub;
 
 -- 4. What is the quarterly trend in the number of sales and the revenue?
 
@@ -212,7 +234,7 @@ WITH sub as (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
@@ -242,7 +264,7 @@ WITH sub as (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
@@ -263,6 +285,43 @@ GROUP BY quarter
 ORDER BY quarter;
 
 
+WITH sub as (
+	SELECT
+		EXTRACT(YEAR FROM i.invoice_date) AS year,
+		EXTRACT(QUARTER FROM i.invoice_date) AS quarter,
+		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
+		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
+		SUM(il.quantity) AS num_sales,
+		SUM(il.quantity * il.unit_price) AS revenue
+	FROM invoice AS i
+	INNER JOIN invoice_line AS il
+		ON i.invoice_id = il.invoice_id
+	GROUP BY 
+		EXTRACT(YEAR FROM i.invoice_date),
+		EXTRACT(QUARTER FROM i.invoice_date)
+	ORDER BY
+		EXTRACT(YEAR FROM i.invoice_date),
+		EXTRACT(QUARTER FROM i.invoice_date)
+),
+sub2 AS (
+	SELECT
+		quarter AS "Quarter",
+		ROUND(AVG(num_unique_invoices)) AS "Average Number of Invoices",
+		ROUND(AVG(num_sales)) AS "Average Number of Sales",
+		ROUND(AVG(revenue), 2) AS "Average Revenue"
+	FROM sub
+	GROUP BY quarter
+	ORDER BY quarter
+)
+SELECT
+	"Quarter",
+	"Average Revenue" / (
+		SELECT AVG(revenue)
+		FROM sub
+	) AS "Seasonality Index"
+FROM sub2;
+
+
 -- 5. What is the monthly trend in the number of sales and the revenue?
 
 WITH sub as (
@@ -272,7 +331,7 @@ WITH sub as (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
@@ -302,7 +361,7 @@ WITH sub as (
 		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
 		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
 		SUM(il.quantity) AS num_sales,
-		SUM(i.total) AS revenue
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
@@ -323,33 +382,38 @@ GROUP BY month
 ORDER BY month;
 
 
--- 6. What is the trend within the usual day of week?
-
-SELECT
-	EXTRACT(DOW FROM i.invoice_date) AS "Day of Week",
-	ROUND(AVG(DISTINCT il.invoice_id)) AS "Number of Unique Invoices",
-	ROUND(AVG(DISTINCT il.invoice_line_id)) AS "Number of Sales",
-	ROUND(AVG(i.total), 2) AS "Revenue"
-FROM invoice AS i
-INNER JOIN invoice_line AS il
-	ON i.invoice_id = il.invoice_id
-GROUP BY EXTRACT(DOW FROM i.invoice_date)
-ORDER BY EXTRACT(DOW FROM i.invoice_date);
-
-WITH sub AS (
+WITH sub as (
 	SELECT
-		EXTRACT(DOW FROM i.invoice_date) AS dow,
-		ROUND(AVG(DISTINCT il.invoice_id)) AS num_invoices,
-		ROUND(AVG(DISTINCT il.invoice_line_id)) AS num_sales,
-		ROUND(AVG(i.total), 2) AS revenue
+		EXTRACT(YEAR FROM i.invoice_date) AS year,
+		EXTRACT(MONTH FROM i.invoice_date) AS month,
+		COUNT(DISTINCT il.invoice_id) AS num_unique_invoices,
+		COUNT(DISTINCT il.invoice_line_id) AS num_invoiceLine_id,
+		SUM(il.quantity) AS num_sales,
+		SUM(il.quantity * il.unit_price) AS revenue
 	FROM invoice AS i
 	INNER JOIN invoice_line AS il
 		ON i.invoice_id = il.invoice_id
-	GROUP BY EXTRACT(DOW FROM i.invoice_date)
-	ORDER BY EXTRACT(DOW FROM i.invoice_date)
+	GROUP BY 
+		EXTRACT(YEAR FROM i.invoice_date),
+		EXTRACT(MONTH FROM i.invoice_date)
+	ORDER BY
+		EXTRACT(YEAR FROM i.invoice_date),
+		EXTRACT(MONTH FROM i.invoice_date)
+),
+sub2 AS (
+	SELECT
+		month AS "Month",
+		ROUND(AVG(num_unique_invoices)) AS "Average Number of Invoices",
+		ROUND(AVG(num_sales)) AS "Average Number of Sales",
+		ROUND(AVG(revenue), 2) AS "Average Revenue"
+	FROM sub
+	GROUP BY month
+	ORDER BY month
 )
-SELECT 
-	ROUND(AVG(num_invoices)) AS "Average Number of Invoices",
-	ROUND(AVG(num_sales)) AS "Average Number of Sales",
-	ROUND(AVG(revenue), 2) AS "Average Revenue"
-FROM sub;
+SELECT
+	"Month",
+	"Average Revenue" / (
+		SELECT AVG(revenue)
+		FROM sub
+	) AS "Seasonality Index"
+FROM sub2;

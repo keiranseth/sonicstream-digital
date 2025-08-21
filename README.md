@@ -84,6 +84,10 @@ See the exploratory data analysis reports by category:
 
 ### Dashboard (Visualizations)
 
+See the [interactive visuals](https://app.powerbi.com/view?r=eyJrIjoiMzg1ODc0YjUtNDgwMC00YjY1LWJiOTEtYjNiZTdiNmQ4MTllIiwidCI6ImJkMDNhNzM1LTJhYTMtNGNjYS05NzIyLTJhZTQ5MjlhYjNlYyIsImMiOjEwfQ%3D%3D).
+
+<iframe title="chinook" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiMzg1ODc0YjUtNDgwMC00YjY1LWJiOTEtYjNiZTdiNmQ4MTllIiwidCI6ImJkMDNhNzM1LTJhYTMtNGNjYS05NzIyLTJhZTQ5MjlhYjNlYyIsImMiOjEwfQ%3D%3D" frameborder="0" allowFullScreen="true"></iframe>
+
 ### Summary of Insights
 
 These are the insights summarized from the analysis report.
@@ -93,8 +97,7 @@ These are the insights summarized from the analysis report.
 1. SonicStream earned $2,328.60 after making a total of 412 unique invoices and a total of 2,240 sales.
 2. In volume of sales and revenue, the top 4 genres are: `Rock`, `Latin`, `Metal`, and `Alternative & Punk`.
 3. In volume of sales and revenue, the top-selling albums are more varied in genre, which include the less top-selling genres.
-    1. In terms of volume of sales, niche genres like `Sci Fi & Fantasy` may increase sales.
-    2. In terms of revenue, for example, `TV shows` generate a lot of revenue.
+    1. To increase volume of sales and generate more revenue, SonicStream should consider selling IPs under `TV shows`, `Comedy`, `Drama`, and `Sci Fi & Fantasy`, just to name a few.
 4. In volume of sales and revenue, the top-selling albums also reflect the top-selling genres. However, in terms of revenue, some entries include `TV shows`.
 
 #### Time-based Analysis
@@ -107,8 +110,9 @@ These are the insights summarized from the analysis report.
 
 3.  There is no significant variation in volume of sales.
 4.  There are clusters of months where the revenue passed the average monthly revenue. These spikes seem to reflect the quarters where the quarter passed the average quarterly revenue.
-5.  After finding the seasonality index, we find that the first three quarters (`January` to `September`) yield higher revenues than the average.
-6.  After finding the seasonality index, we find that the months `January`, `March`, `April`, `June`, `August`, and `September` yield higher revenues than the average, which support insight 5.
+5.  According to the monthly forecast over the store’s lifetime, **revenue will continue to settle for the next two years**. To spark revenue growth, changes in sales and marketing strategies and efforts in increasing the current customer base are required.
+6.  After finding the seasonality index, we find that the first three quarters (`January` to `September`) yield higher revenues than the average.
+7.  After finding the seasonality index, we find that the months `January`, `March`, `April`, `June`, `August`, and `September` yield higher revenues than the average, which support insight 5.
 
 #### Operational Efficiency
 
@@ -157,9 +161,11 @@ These are the insights summarized from the analysis report.
 
 ### Recommendations
 
+One crucial insight gained from this analysis report is that **SonicStream, as it is in the present, will observe the revenue stagnate for the next two years**, according to the monthly forecast. Because of this, it is essential for SonicStream to **discuss strategies and plans for increasing sales activity**.
+
 1. Continue stocking up on tracks which fall under the top 10 genres, especially `Rock`, `Latin`, `Metal`, and `Alternative & Punk`.
-2. Consider catering to niche genres and perhaps expand on TV and films by stocking up on IPs which fall under `Sci Fi & Fantasy` and `TV shows` to increase sales volume and revenue.
+2. Consider catering to niche genres and perhaps expand on TV and films. To increase volume of sales and generate more revenue, SonicStream should consider selling IPs under `TV shows`, `Comedy`, `Drama`, and `Sci Fi & Fantasy`, just to name a few.
 3. Maintain performance for the first 3 quarters. However, address lower sales volume and revenue in the fourth quarter by considering special promotional sales events, especially around Halloween and Christmas.
 4. Since our typical invoices contain 1 to 3 tracks, let us consider bundling options to increase the number of tracks sold per invoice.
-5. The top-selling countries are in North America, Europe, and South America. Tentatively, we can conserve on marketing by focusing on countries in these continents.
+5. The top-selling countries are in North America, Europe, and South America. We can focus our efforts in increasing our customer base for these continents.
 6. The performance review with the representatives should involve asking them their sales strategies during their high-sales-volume and high-revenue months and quarters.
